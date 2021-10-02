@@ -1,5 +1,3 @@
-Package                       Version
------------------------------ -------------------
 anyio                         3.3.2
 argon2-cffi                   20.1.0
 async-generator               1.10
