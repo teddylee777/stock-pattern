@@ -20,15 +20,30 @@
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" />
+    <style>
+        div#content {
+            display: none;
+        }
+
+        div#loading {
+            top: 200 px;
+            margin: auto;
+            position: absolute;
+            z-index: 1000;
+            width: 160px;
+            height: 24px;
+            background: url(loadingimage.gif) no-repeat;
+            cursor: wait;
+        }
+    </style>
 
 </head>
 
 <body>
     <div class="container">
-        <div class="row mt-3 mb-3">
-
-        </div>
-        <p class="text-left"><b>종목 코드</b>를 입력해 주세요. 종목 코드를 모르신다면 <b><a
+        <div id="loading"></div>
+        <h2 class="mt-3">주식 패턴 검색기</h2>
+        <p class="text-left mt-3"><b>종목 코드</b>를 입력해 주세요. 종목 코드를 모르신다면 <b><a
                     href="https://www.ktb.co.kr/trading/popup/itemPop.jspx" target="_blank">여기</a></b>에서 검색해 주세요.</p>
 
 
@@ -75,7 +90,7 @@
 
             </div>
             <div class="form-group">
-                <input type="submit" class="btn btn-success" value="패턴검색">
+                <input type="submit" class="btn btn-success" onclick="LoadingWithMask();" value="패턴검색">
             </div>
         </form>
     </div>
@@ -105,6 +120,44 @@
             $('#datetimepicker1').datetimepicker('maxDate', e.date);
         });
     });
+
+    function LoadingWithMask() {
+        //화면의 높이와 너비를 구합니다.
+        var maskHeight = $(document).height();
+        var maskWidth = window.document.body.clientWidth;
+
+        //화면에 출력할 마스크를 설정해줍니다.
+        var mask =
+            "<div id='mask' style='position:absolute; z-index:9000; background-color:#000000; display:none; left:0; top:0;'></div>";
+        var loadingImg = '';
+        loadingImg += "<p class='text-center'><b>패턴 검색 중입니다. 잠시만 기다려 주세요.</b></p>"
+        loadingImg += "<div id='loadingImg'>";
+        loadingImg += " <img src='https://c.tenor.com/I6kN-6X7nhAAAAAj/loading-buffering.gif' style='position: relative; display: block; margin: 0px auto;'/>";
+        loadingImg += "</div>";
+
+        //화면에 레이어 추가
+        $('body')
+            .append(mask)
+            .append(loadingImg)
+
+        //마스크의 높이와 너비를 화면 것으로 만들어 전체 화면을 채웁니다.
+        $('#mask').css({
+            'width': maskWidth,
+            'height': maskHeight,
+            'opacity': '0.3'
+        });
+
+        //마스크 표시
+        $('#mask').show();
+
+        //로딩중 이미지 표시
+        $('#loadingImg').show();
+    }
+
+    function closeLoadingWithMask() {
+        $('#mask, #loadingImg').hide();
+        $('#mask, #loadingImg').remove();
+    }
 </script>
 
 </html>
