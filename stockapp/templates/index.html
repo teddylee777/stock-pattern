@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+    </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+    </script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js">
+    </script>
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" />
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="row mt-3 mb-3">
+
+        </div>
+        <p class="text-left"><b>종목 코드</b>를 입력해 주세요. 종목 코드를 모르신다면 <b><a
+                    href="https://www.ktb.co.kr/trading/popup/itemPop.jspx" target="_blank">여기</a></b>에서 검색해 주세요.</p>
+
+
+        <form action="{{ url_for('pattern') }}" method="post">
+            <div class="form-group">
+                <div class="input-group mb-3 col-5">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">종목 코드</span>
+                    </div>
+                    <input type="text" class="form-control" placeholder="종목코드 입력" aria-label="Username" value="035720"
+                        aria-describedby="basic-addon1" name="code">
+                </div>
+            </div>
+            <p class="text-left"><b>날짜</b>를 선택해 주세요.</p>
+            <div class="form-group">
+                <div class="row">
+                    <div class='col-md-3'>
+                        <div class="form-group">
+                            <label for="exampleFormControlSelect1">시작일</label>
+                            <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                                <input type="text" class="form-control datetimepicker-input"
+                                    data-target="#datetimepicker1" value="2021-09-10" name="startdate">
+                                <div class="input-group-append" data-target="#datetimepicker1"
+                                    data-toggle="datetimepicker">
+                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='col-md-3'>
+                        <div class="form-group">
+                            <label for="exampleFormControlSelect1">종료일</label>
+                            <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
+                                <input type="text" class="form-control datetimepicker-input"
+                                    data-target="#datetimepicker2" value="2021-10-01" name="enddate">
+                                <div class="input-group-append" data-target="#datetimepicker2"
+                                    data-toggle="datetimepicker">
+                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn btn-success" value="패턴검색">
+            </div>
+        </form>
+    </div>
+    <footer class="text-muted mt-5">
+        <div class="container">
+            <p>&copy; 테디노트. All Rights Reserved.</p>
+            <p><a href="https://www.youtube.com/channel/UCt2wAAXgm87ACiQnDHQEW6Q" target="_blank">유튜브</a></p>
+            <p><a href="https://www.youtube.com/channel/UCt2wAAXgm87ACiQnDHQEW6Q" target="_blank">블로그</a></p>
+        </div>
+    </footer>
+
+</body>
+<script type="text/javascript">
+    $(function () {
+        $('#datetimepicker1').datetimepicker({
+            format: 'YYYY-MM-DD',
+            useCurrent: false
+        });
+        $('#datetimepicker2').datetimepicker({
+            format: 'YYYY-MM-DD',
+            useCurrent: false
+        });
+        $("#datetimepicker1").on("change.datetimepicker", function (e) {
+            $('#datetimepicker2').datetimepicker('minDate', e.date);
+        });
+        $("#datetimepicker2").on("change.datetimepicker", function (e) {
+            $('#datetimepicker1').datetimepicker('maxDate', e.date);
+        });
+    });
+</script>
+
+</html>
