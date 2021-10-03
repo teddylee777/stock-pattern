@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
@@ -51,16 +52,16 @@
 </head>
 
 <body>
+    <div id="loading"></div>
     <div class="container">
-        <div id="loading"></div>
+
         <h2 class="mt-3">주식 패턴 검색기</h2>
         <p class="text-left mt-3"><b>종목 코드</b>를 입력해 주세요. 종목 코드를 모르신다면 <b><a
                     href="https://www.ktb.co.kr/trading/popup/itemPop.jspx" target="_blank">여기</a></b>에서 검색해 주세요.</p>
 
-
         <form action="{{ url_for('pattern') }}" method="post">
             <div class="form-group">
-                <div class="input-group mb-3 col-5">
+                <div class="input-group mb-3">
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="basic-addon1">종목 코드</span>
                     </div>
@@ -103,13 +104,16 @@
             <div class="form-group">
                 <input type="submit" class="btn btn-success" onclick="LoadingWithMask();" value="패턴검색">
             </div>
+            <div id="loadingcontainer"></div>
         </form>
     </div>
+    <hr>
     <footer class="text-muted mt-5">
         <div class="container">
             <p>&copy; 테디노트. All Rights Reserved.</p>
             <p><a href="https://www.youtube.com/channel/UCt2wAAXgm87ACiQnDHQEW6Q" target="_blank">유튜브</a></p>
             <p><a href="https://www.youtube.com/channel/UCt2wAAXgm87ACiQnDHQEW6Q" target="_blank">블로그</a></p>
+            <p>제안: teddynote.ds@gmail.com</p>
         </div>
     </footer>
 
@@ -150,7 +154,8 @@
         //화면에 레이어 추가
         $('body')
             .append(mask)
-            .append(loadingImg)
+        
+        $('#loadingcontainer').append(loadingImg)
 
         //마스크의 높이와 너비를 화면 것으로 만들어 전체 화면을 채웁니다.
         $('#mask').css({
