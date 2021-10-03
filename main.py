@@ -5,6 +5,7 @@ import io
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 import matplotlib
 import time
+import os
 
 
 matplotlib.use('Agg')
