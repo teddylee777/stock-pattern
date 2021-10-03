@@ -39,6 +39,13 @@ def plot_png():
         FigureCanvas(fig).print_png(output)
     return Response(output.getvalue(), mimetype='image/png')
 
+@app.errorhandler(403)
+@app.errorhandler(404)
+@app.errorhandler(410)
+@app.errorhandler(500)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
 @app.route('/pattern', methods=['POST'])
 def pattern():
     long_load('시간 걸리는중')
@@ -50,15 +57,18 @@ def pattern():
     result = p.search(startdate, enddate)
     N = 5
     preds = p.stat_prediction(result, period=N)
-    
-    avg_ = preds.mean() * 100
-    min_ = preds.min() * 100
-    max_ = preds.max() * 100
-    size_ = len(preds)
-    print(avg_, min_, max_, size_)
-    return render_template('result.html', code=code, startdate=startdate, enddate=enddate, avg=round(avg_, 2), min=round(min_, 2), max=round(max_, 2), size=size_)
+
+    if len(preds) > 0:
+        avg_ = preds.mean() * 100
+        min_ = preds.min() * 100
+        max_ = preds.max() * 100
+        size_ = len(preds)
+        print(avg_, min_, max_, size_)
+        return render_template('result.html', code=code, startdate=startdate, enddate=enddate, avg=round(avg_, 2), min=round(min_, 2), max=round(max_, 2), size=size_)
+    else:
+        return render_template('result.html', code=code, startdate=startdate, enddate=enddate, noresult=1)
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port, debug=True)
+    app.run(host="0.0.0.0", port=port, debug=False)
     # app.run(debug=True)

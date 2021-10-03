@@ -40,38 +40,9 @@
         <div class="row mt-3 mb-3">
             <a href="{{ url_for('index')}}" class="btn btn-success">처음으로</a>
         </div>
-        <div class="row mb-3">
-            <div class='col-md-3'>
-                <h3>종목코드: {{code}}</h3>
-            </div>
-        </div>
-        <div class="row mb-3">
-            <div class='col-md-3'>
-                <p>기준일 : <b>{{startdate}} ~ {{enddate}}</b></p>
-            </div>
-        </div>
-        {% if noresult %}
-        <p class="text-left">죄송합니다ㅠㅠ</p>
-        <p class="text-left">검색하신 기간에는 유사 패턴을 찾을 수 없습니다.</p>
-        {% else %}
-        <p class="text-left">유사도 <b>98%</b>이상 패턴 검색에 대한 결과입니다.</p>
-        <p class="text-left">총 <b>{{size}}</b>개의 유사 패턴이 검출 되었습니다.</p>
-        <ul class="text-left">
-            <li class="text-left">최저 수익률은 <b>{{min}} %</b>의 수익률을 보였습니다.</li>
-            <li class="text-left">최고 수익률은 <b>{{max}} %</b>의 수익률을 보였습니다.</li>
-            <li class="text-left">평균 수익률은 <b>{{avg}} %</b>의 수익률을 보였습니다.</li>
-        </ul>
-        <p class="text-left">유사도가 가장 높았던 패턴의 추세입니다.</p>
-        <div class="row">
-            <img src="{{ url_for('plot_png', code=code, startdate=startdate, enddate=enddate) }}" class="img-fluid"
-                alt="Responsive image" />
-
-            <ul>
-                <li class="text-left"><b>base</b>는 기준일의 주가 패턴을 나타냅니다</li>
-                <li class="text-left"><b>target</b>은 기준일과 가장 유사한 패턴의 결과를 보여줍니다 (향후 <b>5일</b>간)</li>
-            </ul>
-        </div>
-        {% endif %}
+        <h3 class="text-center mt-3 mb-5">오류........</h3>
+        <p class="text-center">오류가 발생하였습니다.</p>
+        <p class="text-center"><b>teddynote.ds@gmail.com</b>로 제보해 주시면 수정하도록 하겠습니다.</p>
 
     </div>
     <hr>
