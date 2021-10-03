@@ -36,6 +36,17 @@
             cursor: wait;
         }
     </style>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-V2ST7N3ZY3"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'G-V2ST7N3ZY3');
+    </script>
 
 </head>
 
@@ -132,7 +143,8 @@
         var loadingImg = '';
         loadingImg += "<p class='text-center'><b>패턴 검색 중입니다. 잠시만 기다려 주세요.</b></p>"
         loadingImg += "<div id='loadingImg'>";
-        loadingImg += " <img src='https://c.tenor.com/I6kN-6X7nhAAAAAj/loading-buffering.gif' style='position: relative; display: block; margin: 0px auto;'/>";
+        loadingImg +=
+            " <img src='https://c.tenor.com/I6kN-6X7nhAAAAAj/loading-buffering.gif' style='position: relative; display: block; margin: 0px auto;'/>";
         loadingImg += "</div>";
 
         //화면에 레이어 추가

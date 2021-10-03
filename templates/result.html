@@ -20,7 +20,17 @@
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" />
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-V2ST7N3ZY3"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
 
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'G-V2ST7N3ZY3');
+    </script>
 </head>
 
 <body>
@@ -45,7 +55,7 @@
             <li class="text-left">최저 수익률은 <b>{{min}} %</b>의 수익률을 보였습니다.</li>
             <li class="text-left">최고 수익률은 <b>{{max}} %</b>의 수익률을 보였습니다.</li>
             <li class="text-left">평균 수익률은 <b>{{avg}} %</b>의 수익률을 보였습니다.</li>
-        </ul>        
+        </ul>
         <p class="text-left">유사도가 가장 높았던 패턴의 추세입니다.</p>
         <div class="row">
             <img src="{{ url_for('plot_png', code=code, startdate=startdate, enddate=enddate) }}" class="img-fluid"
