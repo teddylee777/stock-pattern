@@ -1,27 +1,33 @@
-from flask import Flask, render_template, request, Response
+import re
+from flask import Flask, render_template, request, Response, url_for, redirect
 import pattern as pt
-
 import io
-from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
-import matplotlib
 import time
 import os
-
+from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+import matplotlib
+import matplotlib.pyplot as plt
+import matplotlib.gridspec as gridspec
+from mpl_finance import candlestick_ohlc
+import numpy as np
+import FinanceDataReader as fdr
 
 matplotlib.use('Agg')
 
-
 app = Flask(__name__)
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
-    return render_template('index.html')
-
-
-def long_load(typeback):
-    time.sleep(5) #just simulating the waiting period
-    return "You typed: %s" % typeback
-
+    if request.method == 'GET':
+        return render_template('index.html')
+    else:
+        code = request.form['code']
+        startdate = request.form['startdate']
+        enddate = request.form['enddate']
+        if request.form['action'] == '패턴검색':
+            return redirect(url_for('pattern', startdate=startdate, enddate=enddate, code=code))
+        elif request.form['action'] == '차트확인':
+            return render_template('index.html', startdate=startdate, enddate=enddate, code=code, chart=True)
 
 @app.route('/plot.png', methods=['GET'])
 def plot_png():
@@ -39,19 +45,62 @@ def plot_png():
         FigureCanvas(fig).print_png(output)
     return Response(output.getvalue(), mimetype='image/png')
 
+@app.route('/plotchart.png', methods=['GET'])
+def plot_chart():
+    code  = request.args.get('code', None)
+    startdate  = request.args.get('startdate', None)
+    enddate  = request.args.get('enddate', None)
+    
+    fig = plt.figure()
+    fig.set_facecolor('w')
+    gs = gridspec.GridSpec(2, 1, height_ratios=[3, 1])
+    axes = []
+    axes.append(plt.subplot(gs[0]))
+    axes.append(plt.subplot(gs[1], sharex=axes[0]))
+    axes[0].get_xaxis().set_visible(False)
+
+    print(code)
+    data = fdr.DataReader(code)
+    data_ = data[startdate:enddate]
+    print(code, startdate, enddate)
+
+    x = np.arange(len(data_.index))
+    ohlc = data_[['Open', 'High', 'Low', 'Close']].values
+    dohlc = np.hstack((np.reshape(x, (-1, 1)), ohlc))
+
+    # 봉차트
+    candlestick_ohlc(axes[0], dohlc, width=0.5, colorup='r', colordown='b')
+
+    # 거래량 차트
+    axes[1].bar(x, data_['Volume'], color='grey', width=0.6, align='center')
+    axes[1].set_xticks(range(len(x)))
+    axes[1].set_xticklabels(list(data_.index.strftime('%Y-%m-%d')), rotation=90)
+    axes[1].get_yaxis().set_visible(False)
+
+    plt.tight_layout()
+
+    output = io.BytesIO()
+    FigureCanvas(fig).print_png(output)
+    return Response(output.getvalue(), mimetype='image/png')
+
+
 @app.errorhandler(403)
 @app.errorhandler(404)
 @app.errorhandler(410)
 @app.errorhandler(500)
 def page_not_found(e):
-    return render_template('404.html'), 404
+    return render_template('error.html')
 
-@app.route('/pattern', methods=['POST'])
+@app.route('/pattern', methods=['GET', 'POST'])
 def pattern():
-    long_load('시간 걸리는중')
-    code = request.form['code']
-    startdate = request.form['startdate']
-    enddate = request.form['enddate']
+    if request.method == 'POST':
+        code = request.form['code']
+        startdate = request.form['startdate']
+        enddate = request.form['enddate']
+    else:
+        code  = request.args.get('code', None)
+        startdate  = request.args.get('startdate', None)
+        enddate  = request.args.get('enddate', None)
     p = pt.PatternFinder()
     p.set_stock(code)
     result = p.search(startdate, enddate)

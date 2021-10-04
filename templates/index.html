@@ -61,14 +61,19 @@
         <p class="text-left mt-3"><b>종목 코드</b>를 입력해 주세요. 종목 코드를 모르신다면 <b><a
                     href="https://www.ktb.co.kr/trading/popup/itemPop.jspx" target="_blank">여기</a></b>에서 검색해 주세요.</p>
 
-        <form action="{{ url_for('pattern') }}" method="post">
+        <form action="{{ url_for('index') }}" method="post">
             <div class="form-group">
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="basic-addon1">종목 코드</span>
                     </div>
+                    {% if code %}
+                    <input type="text" class="form-control" placeholder="종목코드 입력" aria-label="Username" value="{{code}}"
+                        aria-describedby="basic-addon1" name="code">
+                    {% else %}
                     <input type="text" class="form-control" placeholder="종목코드 입력" aria-label="Username" value="035720"
                         aria-describedby="basic-addon1" name="code">
+                    {% endif %}
                 </div>
             </div>
             <p class="text-left"><b>날짜</b>를 선택해 주세요.</p>
@@ -78,8 +83,13 @@
                         <div class="form-group">
                             <label for="exampleFormControlSelect1">시작일</label>
                             <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                                {% if startdate %}
+                                <input type="text" class="form-control datetimepicker-input"
+                                    data-target="#datetimepicker1" value="{{startdate}}" name="startdate">
+                                {% else %}
                                 <input type="text" class="form-control datetimepicker-input"
                                     data-target="#datetimepicker1" value="2021-09-10" name="startdate">
+                                {% endif %}
                                 <div class="input-group-append" data-target="#datetimepicker1"
                                     data-toggle="datetimepicker">
                                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
@@ -91,8 +101,15 @@
                         <div class="form-group">
                             <label for="exampleFormControlSelect1">종료일</label>
                             <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
+                                {% if enddate %}
+                                <input type="text" class="form-control datetimepicker-input"
+                                    data-target="#datetimepicker2" value="{{enddate}}" name="enddate">
+
+                                {% else %}
                                 <input type="text" class="form-control datetimepicker-input"
                                     data-target="#datetimepicker2" value="2021-10-01" name="enddate">
+                                {% endif %}
+
                                 <div class="input-group-append" data-target="#datetimepicker2"
                                     data-toggle="datetimepicker">
                                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
@@ -101,17 +118,24 @@
                         </div>
                     </div>
                 </div>
-
+                {% if chart %}
+                <img src="{{ url_for('plot_chart', code=code, startdate=startdate, enddate=enddate) }}"
+                    class="img-fluid" alt="Responsive image" />
+                {% endif %}
             </div>
-            <div class="form-group">
-                <input type="submit" class="btn btn-success" onclick="LoadingWithMask();" value="패턴검색">
+            <div class="form-group mb-3">
+                <input type="submit" class="btn btn-info btn-block" name="action" value="차트확인">
+            </div>
+            <div class="form-group mb-3">
+                <input type="submit" class="btn btn-success btn-block" name="action" onclick="LoadingWithMask();"
+                    value="패턴검색">
             </div>
             <div id="loadingcontainer"></div>
         </form>
-        <input type="button" class="btn btn-warning mt-3 mb-3" onClick="sendLinkCustom();" value="카카오톡 공유하기"/>
+        <input type="button" class="btn btn-warning mt-3 mb-3" onClick="sendLinkCustom();" value="카카오톡 공유하기" />
     </div>
-    
-    
+
+
     <hr>
     <footer class="text-muted mt-5">
         <div class="container">
@@ -181,8 +205,9 @@
         $('#mask, #loadingImg').hide();
         $('#mask, #loadingImg').remove();
     }
+
     function sendLinkCustom() {
-        
+
         Kakao.Link.sendCustom({
             templateId: 62893
         });
