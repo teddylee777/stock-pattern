@@ -18,6 +18,7 @@
     <script type="text/javascript"
         src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js">
     </script>
+    <script type="text/JavaScript" src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" />
@@ -107,7 +108,10 @@
             </div>
             <div id="loadingcontainer"></div>
         </form>
+        <input type="button" class="btn btn-warning mt-3 mb-3" onClick="sendLinkCustom();" value="카카오톡 공유하기"/>
     </div>
+    
+    
     <hr>
     <footer class="text-muted mt-5">
         <div class="container">
@@ -135,6 +139,7 @@
         $("#datetimepicker2").on("change.datetimepicker", function (e) {
             $('#datetimepicker1').datetimepicker('maxDate', e.date);
         });
+        Kakao.init("59b5bdc754eaf8aea2e4c6471b2f29cf");
     });
 
     function LoadingWithMask() {
@@ -175,6 +180,12 @@
     function closeLoadingWithMask() {
         $('#mask, #loadingImg').hide();
         $('#mask, #loadingImg').remove();
+    }
+    function sendLinkCustom() {
+        
+        Kakao.Link.sendCustom({
+            templateId: 62893
+        });
     }
 </script>
 
